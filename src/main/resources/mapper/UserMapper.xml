@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qxy.community.dao.UserMapper">
+    <sql id="selectFields">
+        id,username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+    <sql id="saveFields">
+        username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+    <select id="queryById" parameterType="Integer" resultType="com.qxy.community.entity.User">
+        select
+        <include refid="selectFields"></include>
+        from user
+<!--        <where>
+            status==0 or status == 1
+            <if test="id!=null">
+                and id =#{id}
+            </if>
+        </where>-->
+        where  id=#{id}
+    </select>
+    <select id="queryByName" resultType="com.qxy.community.entity.User">
+        select
+        <include refid="selectFields"></include>
+        from user
+        <!--<where>
+            status==0 or status == 1
+            <if test="username!=null and username!=''">
+                and username = #{username}
+            </if>
+        </where>-->
+        where  username = #{username}
+    </select>
+    <select id="queryByEmail" resultType="com.qxy.community.entity.User">
+        select
+        <include refid="selectFields"></include>
+        from user
+        <!--<where>
+            status==0 or status == 1
+            <if test="email!=null and email!=''">
+                and email = #{email}
+            </if>
+        </where>-->
+        where email = #{email}
+    </select>
+    <insert id="save" parameterType="com.qxy.community.entity.User" keyProperty="id" useGeneratedKeys="true">
+        insert into user(<include refid="saveFields"></include>)
+        values (#{username},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},CURRENT_DATE )
+    </insert>
+    <update id="updateStatus" >
+        update user
+        set
+        <if test="status==0 or status==1">
+            status = #{status}
+        </if>
+        where id = #{id}
+    </update>
+    <update id="updatePassword">
+        update user
+        set
+        <if test="password!=null and password!=''">
+            password = #{password}
+        </if>
+        where id = #{id}
+    </update>
+    <update id="updateHeaderUrl">
+        update user
+        set
+        <if test="headerUrl!=null and headerUrl!=''">
+            header_url = #{headerUrl}
+        </if>
+        where id = #{id}
+    </update>
+    <delete id="deleteUserById">
+        delete from user
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+        </where>
+    </delete>
+</mapper>
