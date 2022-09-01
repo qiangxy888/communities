@@ -20,8 +20,8 @@ public class KaptchaConfig {
     public Producer kaptchaProducer() {
         Properties properties = new Properties();
         properties.setProperty("kaptcha.image.width", "100");//设置图片宽度
-        properties.setProperty("kaptcha.image.height", "40");//设置图片高度
-        properties.setProperty("kaptcha.textproducer,font.size", "32");//设置字体大小
+        properties.setProperty("kaptcha.image.height", "50");//设置图片高度
+        properties.setProperty("kaptcha.textproducer,font.size", "28");//设置字体大小
         properties.setProperty("kaptcha.textproducer.font.color", "0,0,0");//设置字体颜色
         properties.setProperty("kaptcha.texstproducer.char.string", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");//设置字符范围
         properties.setProperty("kaptcha.textproducer.char.length", "4");//设置字符数量

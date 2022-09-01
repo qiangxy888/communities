@@ -5,22 +5,31 @@ import com.qxy.community.config.KaptchaConfig;
 import com.qxy.community.constant.CommunityConstant;
 import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
+import com.qxy.community.service.LoginTicketService;
 import com.qxy.community.service.UserService;
+import com.qxy.community.util.CommunityUtil;
+import com.sun.deploy.net.HttpResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.Map;
 
 /**
@@ -35,7 +44,10 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private Producer kaptchaProducer;
-
+    @Autowired
+    private LoginTicketService loginTicketService;
+    @Value("{server.servlet.context-path}")
+    private String contextPath;
     /**
      * 跳转到注册页面
      *
@@ -46,6 +58,10 @@ public class LoginController {
         return "/site/register";
     }
 
+    /**
+     * 跳转到登录页面
+     * @return
+     */
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String getLoginPage() {
         return "/site/login";
@@ -124,5 +140,51 @@ public class LoginController {
         } catch (IOException e) {
             logger.error("验证码响应失败" + e.getMessage());
         }
+    }
+
+    /**
+     * 登录
+     * @param username 账号
+     * @param password 密码
+     * @param code
+     * @param remember 是否记住我
+     * @param model
+     * @param session
+     * @param response
+     */
+    @RequestMapping(path = "/login" , method = RequestMethod.POST)
+    public String Login(String username, String password, String code, boolean remember,
+                      Model model , HttpSession session, HttpServletResponse response){
+        //检查验证码
+        String kaptcha = (String)session.getAttribute("kaptcha");
+        if(StringUtils.isBlank(kaptcha)||StringUtils.isBlank(code)||!kaptcha.equalsIgnoreCase(code)){
+            model.addAttribute("codeMsg","验证码不正确");
+            return "/site/login";//回到登录页面
+        }
+        //检查账号密码
+        int expiredSeconds = remember? CommunityConstant.REMEMBER_EXPIRED_SECONDS:CommunityConstant.DEFAULT_EXPIRED_SECONDS;
+        Map<String, Object> map = userService.login(username, password, expiredSeconds);
+        if(map.containsKey("ticket")){
+            Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
+            cookie.setPath(contextPath);
+            cookie.setMaxAge(expiredSeconds);
+            response.addCookie(cookie);
+            return "redirect:/index";//重定向到首页
+        }else{
+            model.addAttribute("usernameMsg",map.get("usernameMsg"));
+            model.addAttribute("passwordMsg",map.get("passwordMsg"));
+            return "/site/login";
+        }
+    }
+
+    /**
+     * 退出登录
+     * @param ticket
+     * @return
+     */
+    @RequestMapping(path = "/logout",method = RequestMethod.GET)
+    public String logout(@CookieValue("ticket") String ticket){
+        userService.logout(ticket);
+        return "/redirect:index";
     }
 }

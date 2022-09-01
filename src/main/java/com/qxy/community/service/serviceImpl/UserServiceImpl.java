@@ -1,7 +1,9 @@
 package com.qxy.community.service.serviceImpl;
 
 import com.qxy.community.constant.CommunityConstant;
+import com.qxy.community.dao.LoginTicketMapper;
 import com.qxy.community.dao.UserMapper;
+import com.qxy.community.entity.LoginTicket;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.UserService;
 import com.qxy.community.util.CommunityUtil;
@@ -35,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private String contextPath;
     @Value("${community.path.domain}")
     private String domain;
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Override
     public User queryById(int userId) {
@@ -152,5 +156,59 @@ public class UserServiceImpl implements UserService {
         } else {
             return CommunityConstant.ACTIVATION_FAIL;
         }
+    }
+
+    /**
+     * 验证用户登录
+     * @param username
+     * @param password
+     * @param expiredSeconds
+     * @return
+     */
+    @Override
+    public Map<String, Object> login(String username, String password, int expiredSeconds) {
+        Map<String, Object> map = new HashMap<>();
+        //对传入的数据进行空值判断
+        if (StringUtils.isBlank(username)) {
+            map.put("usernameMsg", "用户名不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(password)) {
+            map.put("passwordMsg", "密码不能为空");
+            return map;
+        }
+        //验证账号
+        User userByName = userMapper.queryByName(username);
+        if (userByName == null) {
+            map.put("usernameMsg", "该账号不存在");
+            return map;
+        }
+        if (userByName.getStatus() == 0) {
+            map.put("usernameMsg", "账号未激活");
+            return map;
+        }
+        //验证密码
+        password = CommunityUtil.md5(password + userByName.getSalt());
+        if (!password.equals(userByName.getPassword())) {
+            map.put("passwordMsg", "密码错误");
+            return map;
+        }
+        //生成登录凭证
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(userByName.getId());
+        loginTicket.setStatus(CommunityConstant.LOGIN_TICKET_STATUS_VALID);
+        loginTicket.setTicket(CommunityUtil.generateUUID());
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
+        loginTicketMapper.insertLoginTicket(loginTicket);
+        map.put("ticket",loginTicket.getTicket());
+        return map;
+    }
+
+    /**
+     * 退出登录
+     * @param ticket
+     */
+    public void logout(String ticket){
+        loginTicketMapper.updateStatusByTicket(ticket,CommunityConstant.LOGIN_TICKET_STATUS_INVALID);
     }
 }
