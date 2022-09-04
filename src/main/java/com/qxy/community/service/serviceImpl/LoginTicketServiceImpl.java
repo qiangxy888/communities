@@ -30,17 +30,17 @@ public class LoginTicketServiceImpl implements LoginTicketService {
 
     @Override
     public int updateStatusById(int id, int status) {
-        return 0;
+        return loginTicketMapper.updateStatusById(id,status);
     }
 
     @Override
     public int updateStatusByTicket(String ticket, int status) {
-        return 0;
+        return loginTicketMapper.updateStatusByTicket(ticket,status);
     }
 
     @Override
     public LoginTicket selectByTicket(String ticket) {
-        return null;
+        return loginTicketMapper.selectByTicket(ticket);
     }
 
 

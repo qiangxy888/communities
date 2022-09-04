@@ -199,6 +199,7 @@ public class UserServiceImpl implements UserService {
         loginTicket.setStatus(CommunityConstant.LOGIN_TICKET_STATUS_VALID);
         loginTicket.setTicket(CommunityUtil.generateUUID());
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
+        loginTicket.setCreateTime(new Date());
         loginTicketMapper.insertLoginTicket(loginTicket);
         map.put("ticket",loginTicket.getTicket());
         return map;

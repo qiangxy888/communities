@@ -16,4 +16,5 @@ public class LoginTicket {
     private String ticket;//登录凭证
     private int status;//状态 0有效，1无效
     private Date expired;//有效期
+    private Date createTime;//创建时间
 }

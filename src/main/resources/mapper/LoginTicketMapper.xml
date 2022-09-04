@@ -9,12 +9,13 @@
         <result property="ticket" column="ticket" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="expired" column="expired" jdbcType="TIMESTAMP"/>
+        <result property="create_time" column="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <insert id="insertLoginTicket" parameterType="com.qxy.community.entity.LoginTicket" keyProperty="id" useGeneratedKeys="true">
         insert into
-        login_ticket(user_id, ticket, status, expired)
+        login_ticket(user_id, ticket, status, expired,create_time)
         values
-        (#{userId},#{ticket},#{status},#{expired})
+        (#{userId},#{ticket},#{status},#{expired},#{createTime})
     </insert>
     <update id="updateStatusById">
         update login_ticket
