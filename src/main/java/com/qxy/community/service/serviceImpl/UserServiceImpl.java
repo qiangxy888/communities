@@ -71,11 +71,23 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateStatus(id, status);
     }
 
+    /**
+     * 修改密码
+     * @param id
+     * @param password
+     * @return
+     */
     @Override
     public int updatePassword(int id, String password) {
         return userMapper.updatePassword(id, password);
     }
 
+    /**
+     * 更新用户头像
+     * @param id 用户id
+     * @param headerUrl 头像路径
+     * @return
+     */
     @Override
     public int updateHeaderUrl(int id, String headerUrl) {
         return userMapper.updateHeaderUrl(id, headerUrl);
