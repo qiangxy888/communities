@@ -1,14 +1,10 @@
 package com.qxy.community.controller;
 
 import com.google.code.kaptcha.Producer;
-import com.qxy.community.config.KaptchaConfig;
 import com.qxy.community.constant.CommunityConstant;
-import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.LoginTicketService;
 import com.qxy.community.service.UserService;
-import com.qxy.community.util.CommunityUtil;
-import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.util.Map;
 
 /**

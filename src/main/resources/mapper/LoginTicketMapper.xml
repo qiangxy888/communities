@@ -9,7 +9,7 @@
         <result property="ticket" column="ticket" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="expired" column="expired" jdbcType="TIMESTAMP"/>
-        <result property="create_time" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
     <insert id="insertLoginTicket" parameterType="com.qxy.community.entity.LoginTicket" keyProperty="id" useGeneratedKeys="true">
         insert into
