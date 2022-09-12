@@ -15,4 +15,6 @@ public interface DiscussPostService {
     List<DiscussPost> queryPageList(Integer userId,int pageCnt,int rowCnt);
 
     int queryTotalCnt(Integer userId);
+
+    DiscussPost saveDiscussPost(DiscussPost discussPost);
 }

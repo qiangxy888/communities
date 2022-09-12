@@ -13,7 +13,9 @@ import java.util.List;
  */
 @Mapper
 public interface DiscussPostMapper {
-     List<DiscussPost> queryPageList(@Param("userId") Integer userId,int pageCnt,int rowCnt);
+    List<DiscussPost> queryPageList(@Param("userId") Integer userId, int pageCnt, int rowCnt);
 
-     int queryTotalCnt(@Param("userId") Integer userId);
+    int queryTotalCnt(@Param("userId") Integer userId);
+
+    int saveDiscussPost(DiscussPost discussPost);
 }

@@ -72,4 +72,13 @@ public class MapperTest {
         LoginTicket loginTicket = loginTicketMapper.selectByTicket(hgsyjhf.getTicket());
         System.out.println(loginTicket);
     }
+    @Test
+    public void saveDiscussPost(){
+        DiscussPost discussPost = new DiscussPost();
+        discussPost.setUserId(180);
+        discussPost.setTitle("ZZZ");
+        discussPost.setContent("震惊震惊震惊");
+        discussPost.setCreateTime(new Date());
+        discussPostMapper.saveDiscussPost(discussPost);
+    }
 }

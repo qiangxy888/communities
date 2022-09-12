@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qxy.community.dao.DiscussPostMapper">
+    <insert id="saveDiscussPost" parameterType="com.qxy.community.entity.DiscussPost" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into discuss_post( user_id, title, content, type, status, create_time, comment_count, score)
+        value (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
+    </insert>
     <select id="queryPageList" resultType="com.qxy.community.entity.DiscussPost">
         select * from discuss_post
         <where>

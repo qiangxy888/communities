@@ -15,9 +15,9 @@ public class DiscussPost {
     private Integer userId;//用户id
     private String title;//文章标题
     private String content;//内容
-    private Integer type;//类型 0普通，1置顶
-    private Integer status;//状态 0正常 1精华 2拉黑
+    private int type;//类型 0普通，1置顶
+    private int status;//状态 0正常 1精华 2拉黑
     private Date createTime;//创建时间
-    private Integer commentCount;// 评论数量
+    private int commentCount;// 评论数量
     private double score;//得分
 }
