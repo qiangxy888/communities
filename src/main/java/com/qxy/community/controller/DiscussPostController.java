@@ -3,11 +3,14 @@ package com.qxy.community.controller;
 import com.qxy.community.entity.DiscussPost;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.DiscussPostService;
+import com.qxy.community.service.UserService;
 import com.qxy.community.util.CommunityUtil;
 import com.qxy.community.util.HostHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +27,8 @@ import java.util.Date;
 public class DiscussPostController {
     @Autowired
     private DiscussPostService discussPostService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private HostHolder hostHolder;
     @RequestMapping(path = "/add",method = RequestMethod.POST)
@@ -45,5 +50,15 @@ public class DiscussPostController {
         discussPost.setCreateTime(new Date());
         discussPostService.saveDiscussPost(discussPost);
         return CommunityUtil.getJsonString(0,"发布成功");
+    }
+    @RequestMapping(path = "/detail/{discussPostId}",method = RequestMethod.GET)
+    public String queryDiscussPost(@PathVariable("discussPostId") int id, Model model){
+        //帖子
+        DiscussPost post = discussPostService.queryById(id);
+        model.addAttribute("post",post);
+        //作者
+        User user = userService.queryById(post.getUserId());
+        model.addAttribute("user",user);
+        return "/site/discuss-detail";
     }
 }

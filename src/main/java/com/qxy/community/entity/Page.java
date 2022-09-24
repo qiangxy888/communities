@@ -11,7 +11,7 @@ package com.qxy.community.entity;
  */
 public class Page {
     private int rowCnt = 10;//每页条数
-    int pageCnt = 1;//当前页
+    private int pageCnt = 1;//当前页
     private int rows;//数据总条数，用于计算总页数
     private String path;//查询路径，用于复用分页链接
 

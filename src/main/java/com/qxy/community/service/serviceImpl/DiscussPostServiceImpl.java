@@ -48,4 +48,9 @@ public class DiscussPostServiceImpl implements DiscussPostService {
         discussPostMapper.saveDiscussPost(discussPost);
         return discussPost;
     }
+
+    @Override
+    public DiscussPost queryById(int id) {
+        return this.discussPostMapper.queryById(id);
+    }
 }

@@ -18,4 +18,6 @@ public interface DiscussPostMapper {
     int queryTotalCnt(@Param("userId") Integer userId);
 
     int saveDiscussPost(DiscussPost discussPost);
+
+    DiscussPost queryById(int id);
 }

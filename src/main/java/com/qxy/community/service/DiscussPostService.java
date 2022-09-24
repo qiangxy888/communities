@@ -12,9 +12,11 @@ import java.util.List;
  * @Date 2022/8/27 8:05
  */
 public interface DiscussPostService {
-    List<DiscussPost> queryPageList(Integer userId,int pageCnt,int rowCnt);
+    List<DiscussPost> queryPageList(Integer userId, int pageCnt, int rowCnt);
 
     int queryTotalCnt(Integer userId);
 
     DiscussPost saveDiscussPost(DiscussPost discussPost);
+
+    DiscussPost queryById(int id);
 }

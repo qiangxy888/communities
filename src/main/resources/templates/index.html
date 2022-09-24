@@ -143,7 +143,6 @@
                     </div>
                 </li>
             </ul>
-            <!-- 分页 -->
             <nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
@@ -155,11 +154,11 @@
                         th:each="i:${#numbers.sequence(page.from,page.to)}">
                         <a class="page-link" th:href="@{${page.path}(pageCnt=${i})}" th:text="${i}">1</a>
                     </li>
-                    <li th:class="|page-item ${page.pageCnt==page.getTotal?'disabled':''}|">
+                    <li th:class="|page-item ${page.pageCnt==page.total?'disabled':''}|">
                         <a class="page-link" th:href="@{${page.path}(pageCnt=${page.pageCnt+1})}">下一页</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{${page.path}(pageCnt=${page.getTotal})}">末页</a>
+                        <a class="page-link" th:href="@{${page.path}(pageCnt=${page.total})}">末页</a>
                     </li>
                 </ul>
             </nav>
