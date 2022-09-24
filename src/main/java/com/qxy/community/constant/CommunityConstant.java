@@ -19,4 +19,8 @@ public class CommunityConstant {
     public static final int DEFAULT_EXPIRED_SECONDS=1000*3600*6;//默认
     public static final int LOGIN_TICKET_STATUS_VALID=0;//登录凭证有效
     public static final int LOGIN_TICKET_STATUS_INVALID=1;//登录凭证无效
+
+    //评论相关
+    public static final int ENTITY_TYPE_POST=1;//评论对象是帖子
+    public static final int ENTITY_TYPE_COMMENT=2;//评论对象是评论
 }

@@ -1,12 +1,15 @@
 package com.qxy;
 
+import com.qxy.community.dao.CommentMapper;
 import com.qxy.community.dao.DiscussPostMapper;
 import com.qxy.community.dao.LoginTicketMapper;
 import com.qxy.community.dao.UserMapper;
+import com.qxy.community.entity.Comment;
 import com.qxy.community.entity.DiscussPost;
 import com.qxy.community.entity.LoginTicket;
 import com.qxy.community.entity.User;
 
+import com.qxy.community.service.CommentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class MapperTest {
     private DiscussPostMapper discussPostMapper;
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+    @Autowired
+    private CommentMapper commentMapper;
     @Test
     public void queryById(){
         User user = userMapper.queryById(1);
@@ -80,5 +85,17 @@ public class MapperTest {
         discussPost.setContent("震惊震惊震惊");
         discussPost.setCreateTime(new Date());
         discussPostMapper.saveDiscussPost(discussPost);
+    }
+    @Test
+    public void queryComments(){
+        List<Comment> comments = commentMapper.queryCommentsByEntity(1, 233, 1, 2);
+        for(Comment comment:comments){
+            System.out.println(comment);
+        }
+    }
+    @Test
+    public void queryCommentTotal(){
+        int total = commentMapper.queryCommentsTotal(1, 233);
+        System.out.println(total);
     }
 }
