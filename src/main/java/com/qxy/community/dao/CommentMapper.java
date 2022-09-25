@@ -15,4 +15,6 @@ public interface CommentMapper {
     List<Comment> queryCommentsByEntity(int entityType, int entityId, int offset, int rowCnt);
 
     int queryCommentsTotal(int entityType, int entityId);
+
+    int insertComment(Comment comment);
 }

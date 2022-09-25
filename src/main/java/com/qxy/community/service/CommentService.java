@@ -12,6 +12,7 @@ import java.util.List;
 public interface CommentService {
     /**
      * 查询分页评论数据
+     *
      * @param entityType
      * @param entityId
      * @param offset
@@ -22,9 +23,17 @@ public interface CommentService {
 
     /**
      * 查询总评论数
+     *
      * @param entityType
      * @param entityId
      * @return
      */
     int queryCommentsTotal(int entityType, int entityId);
+
+    /**
+     * 新增评论
+     * @param comment 评论实体
+     * @return
+     */
+    int insertComment(Comment comment);
 }

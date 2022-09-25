@@ -6,6 +6,11 @@
     <sql id="selectFields">
         id,user_id,entity_type,entity_id,target_id,content,status,create_time
     </sql>
+    <!--新增评论-->
+    <insert id="insertComment" keyProperty="id" useGeneratedKeys="true" parameterType="comment">
+        insert into comment(user_id, entity_type, entity_id, target_id, content, status, create_time)
+        value (#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
+    </insert>
     <select id="queryCommentsByEntity" resultType="com.qxy.community.entity.Comment">
         select <include refid="selectFields"></include>
         from comment
