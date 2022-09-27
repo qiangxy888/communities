@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qxy.community.dao.MessageMapper">
+    <sql id="selectFields">
+        id,from_id,to_id,conversation_id,content,status,create_time
+    </sql>
+    <!--查询会话列表，显示最新一条私信-->
+    <select id="selectConversation" resultType="com.qxy.community.entity.Message">
+        select <include refid="selectFields"></include>
+        from message
+        where (from_id=#{userId} or to_id=#{userId})
+        and id in (select max(id)
+            from message
+            where status!=2
+            and from_id!=1
+            group by conversation_id
+        )
+        order by id desc
+        limit #{offset},#{rowCnt}
+    </select>
+    <!--显示会话数量-->
+    <select id="selectConversationCount" resultType="java.lang.Integer">
+        select count(1)
+        from message
+        where (from_id=#{userId} or to_id=#{userId})
+        and id in (select max(id)
+        from message
+        where status!=2
+        and from_id!=1
+        group by conversation_id
+        )
+    </select>
+    <!--查询某会话的私信列表-->
+    <select id="selectLetters" resultType="com.qxy.community.entity.Message">
+        select <include refid="selectFields"></include>
+        from message
+        where status!=2
+        and from_id!=1
+        and conversation_id=#{conversationId}
+        order by create_time
+        limit #{offset},#{rowCnt}
+    </select>
+    <!--查询某会话的私信数量-->
+    <select id="selectLetterCount" resultType="java.lang.Integer">
+        select count(id)
+        from message
+        where from_id!=1
+        and status!=2
+        and conversation_id=#{conversationId}
+    </select>
+    <!--查询未读消息的数量，可以查到总数，可以查到某个会话的未读数-->
+    <select id="selectLetterUnreadCount" resultType="java.lang.Integer">
+        select count(id)
+        from message
+        <where>
+            status=0
+            and from_id!=1
+            <if test="conversationId!=null and conversationId!=''">
+                and conversation_id=#{conversationId}
+            </if>
+        </where>
+    </select>
+</mapper>
