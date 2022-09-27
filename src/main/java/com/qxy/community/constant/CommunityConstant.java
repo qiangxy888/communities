@@ -23,4 +23,8 @@ public class CommunityConstant {
     //评论相关
     public static final int ENTITY_TYPE_POST=1;//评论对象是帖子
     public static final int ENTITY_TYPE_COMMENT=2;//评论对象是评论
+
+    //私信相关
+    public static final int UNREAD_MESSAGE=0;//未读消息
+    public static final int READ_MESSAGE=1;//已读消息
 }

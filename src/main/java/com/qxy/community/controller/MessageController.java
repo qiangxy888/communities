@@ -1,12 +1,15 @@
 package com.qxy.community.controller;
 
+import com.qxy.community.constant.CommunityConstant;
 import com.qxy.community.entity.Message;
 import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.MessageService;
 import com.qxy.community.service.UserService;
+import com.qxy.community.util.CommunityUtil;
 import com.qxy.community.util.HostHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.jws.WebParam;
 import java.util.*;
@@ -102,6 +106,11 @@ public class MessageController {
             //私信目标(页面显示来自XXX的私信)
             model.addAttribute("target",getLetterTarget(conversationId));
         }
+        //设置已读
+        List<Integer> ids = getLetterIds(letterList);
+        if(!ids.isEmpty()){
+            messageService.readMessage(ids);
+        }
         return "/site/letter-detail";
     }
 
@@ -119,5 +128,51 @@ public class MessageController {
         }else {
             return userService.queryById(id0);
         }
+    }
+
+    /**
+     * 发送私信
+     * @param toName
+     * @param content
+     * @return
+     */
+    @RequestMapping(path = "/letter/send",method = RequestMethod.POST)
+    @ResponseBody
+    public String sendLetter(String toName,String content){
+        if(StringUtils.isBlank(toName)||StringUtils.isBlank(content)){
+            throw new IllegalArgumentException("参数不能为空");
+        }
+        //根据姓名得到收件方user
+        User target = userService.queryByName(toName);
+        Message message = new Message();
+        message.setFromId(hostHolder.getUser().getId());
+        message.setToId(target.getId());
+        message.setContent(content);
+        //拼接conversationId，数字小的id在前
+        if(message.getFromId()<message.getToId()){
+            message.setConversationId(message.getFromId()+"_"+message.getToId());
+        }else {
+            message.setConversationId(message.getToId()+"_"+message.getFromId());
+        }
+        message.setCreateTime(new Date());
+        messageService.sendMessage(message);
+        return CommunityUtil.getJsonString(0);
+    }
+    /**
+     * 获取所有未读消息id
+     * @param letterList
+     * @return
+     */
+    public List<Integer> getLetterIds(List<Message> letterList){
+        ArrayList<Integer> ids = new ArrayList<>();
+        if(!letterList.isEmpty()){
+            for(Message letter : letterList){
+                if(hostHolder.getUser().getId()==letter.getToId()&&
+                letter.getStatus()== CommunityConstant.UNREAD_MESSAGE){
+                    ids.add(letter.getId());
+                }
+            }
+        }
+        return ids;
     }
 }
