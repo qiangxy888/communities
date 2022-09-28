@@ -5,6 +5,7 @@ import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.DiscussPostService;
 import com.qxy.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @version 1.0
  * @Date 2022/8/27 8:11
  */
+@Slf4j
 @Controller
 public class HomeController {
     @Autowired
@@ -49,5 +51,14 @@ public class HomeController {
         model.addAttribute("discussPosts",discussPosts);
         //返回模板
         return "/index";
+    }
+
+    /**
+     * 获取错误页
+     * @return
+     */
+    @RequestMapping(path = "/error",method = RequestMethod.GET)
+    public String getErrorPage(){
+        return "/error/500";
     }
 }
