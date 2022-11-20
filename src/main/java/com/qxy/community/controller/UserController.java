@@ -2,6 +2,7 @@ package com.qxy.community.controller;
 
 import com.qxy.community.annotation.LoginRequired;
 import com.qxy.community.entity.User;
+import com.qxy.community.service.LikeService;
 import com.qxy.community.service.UserService;
 import com.qxy.community.util.CommunityUtil;
 import com.qxy.community.util.CookieUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.jws.WebParam;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +42,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private LikeService likeService;
     @Value("${community.path.upload}")
     private String uploadPath;
     @Value("${community.path.domain}")
@@ -171,5 +175,19 @@ public class UserController {
         }
         userService.updatePassword(user.getId(),newPassword);
         return "redirect:/index";
+    }
+    //个人主页
+    @RequestMapping(path = "/profile/{userId}" ,method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId,Model model){
+        User user = userService.queryById(userId);
+        if(user==null){
+            throw new RuntimeException("该用户不存在");
+        }
+        //用户
+        model.addAttribute("user",user);
+        //点赞数量
+        long likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount",likeCount);
+        return "/site/profile";
     }
 }

@@ -12,7 +12,7 @@ public interface LikeService {
      * @param entityType
      * @param entityId
      */
-    void like(int userId, int entityType, int entityId);
+    void like(int userId, int entityType, int entityId,int entityUserId);
 
     /**
      * 查询某实体的点赞数量
@@ -31,4 +31,10 @@ public interface LikeService {
      */
     int findEntityLikeStatus(int userId, int entityType, int entityId);
 
+    /**
+     * 查询某个用户获得的赞的数量
+     * @param userId
+     * @return
+     */
+    int findUserLikeCount(int userId);
 }
