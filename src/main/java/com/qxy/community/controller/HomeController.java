@@ -1,9 +1,11 @@
 package com.qxy.community.controller;
 
+import com.qxy.community.constant.CommunityConstant;
 import com.qxy.community.entity.DiscussPost;
 import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
 import com.qxy.community.service.DiscussPostService;
+import com.qxy.community.service.LikeService;
 import com.qxy.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,9 @@ public class HomeController {
     @Autowired
     DiscussPostService discussPostService;
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
+    private LikeService likeService;
     @RequestMapping(path = "/index",method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page){
         //方法调用前，SpringMVC会自动实例化Model和Page，并将Page注入Model
@@ -42,9 +46,13 @@ public class HomeController {
         //遍历集合，根据帖子的userId得到user对象
         for(DiscussPost post :list){
             User user = userService.queryById(post.getUserId());
+            long likeCount = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_POST, post.getId());
+            int likeStatus = likeService.findEntityLikeStatus(user.getId(), CommunityConstant.ENTITY_TYPE_POST, post.getId());
             Map<String, Object> map = new HashMap<>();
             map.put("user",user);
             map.put("post",post);
+            map.put("likeCount",likeCount);
+            map.put("likeStatus",likeStatus);
             discussPosts.add(map);
         }
         //把准备好的数据传给模板
