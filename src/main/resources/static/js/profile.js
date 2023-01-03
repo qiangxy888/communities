@@ -42,4 +42,3 @@ function follow() {
         // $(btn).text("关注TA").removeClass("btn-secondary").addClass("btn-info");
     }
 }
-Footer

@@ -20,9 +20,10 @@ public class CommunityConstant {
     public static final int LOGIN_TICKET_STATUS_VALID=0;//登录凭证有效
     public static final int LOGIN_TICKET_STATUS_INVALID=1;//登录凭证无效
 
-    //评论相关
-    public static final int ENTITY_TYPE_POST=1;//评论对象是帖子
-    public static final int ENTITY_TYPE_COMMENT=2;//评论对象是评论
+    //实体类型相关
+    public static final int ENTITY_TYPE_POST=1;//帖子
+    public static final int ENTITY_TYPE_COMMENT=2;//评论
+    public static final int ENTITY_TYPE_USER=3;//用户
 
     //私信相关
     public static final int UNREAD_MESSAGE=0;//未读消息

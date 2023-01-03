@@ -1,7 +1,9 @@
 package com.qxy.community.controller;
 
 import com.qxy.community.annotation.LoginRequired;
+import com.qxy.community.constant.CommunityConstant;
 import com.qxy.community.entity.User;
+import com.qxy.community.service.FollowService;
 import com.qxy.community.service.LikeService;
 import com.qxy.community.service.UserService;
 import com.qxy.community.util.CommunityUtil;
@@ -44,6 +46,8 @@ public class UserController {
     private HostHolder hostHolder;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private FollowService followService;
     @Value("${community.path.upload}")
     private String uploadPath;
     @Value("${community.path.domain}")
@@ -188,6 +192,18 @@ public class UserController {
         //点赞数量
         long likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount",likeCount);
+        //关注数量(关注的实体类型为用户的数量)
+        long followeeCount = followService.findFolloweeCount(userId, CommunityConstant.ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount",followeeCount);
+        //粉丝数量
+        long followerCount = followService.findFollowerCount(CommunityConstant.ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount",followerCount);
+        //当前登录用户对该用户的关注状态
+        boolean hasFollowed = false;
+        if(hostHolder.getUser()!=null){
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), CommunityConstant.ENTITY_TYPE_USER, userId);
+        }
+        model.addAttribute("hasFollowed",hasFollowed);
         return "/site/profile";
     }
 }
