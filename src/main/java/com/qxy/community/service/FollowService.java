@@ -1,5 +1,10 @@
 package com.qxy.community.service;
 
+import com.qxy.community.entity.User;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author qxy
  * @version 1.0
@@ -49,4 +54,16 @@ public interface FollowService {
      * @return
      */
     boolean hasFollowed(int userId,int entityType,int entityId);
+
+    /**
+     * 关注列表
+     */
+
+    List<Map<String,Object>> findFolloweeList(int userId,int offset,int rowCnt);
+
+    /**
+     * 粉丝列表
+     */
+
+    List<Map<String,Object>> findFollowerList(int userId,int offset,int rowCnt);
 }
