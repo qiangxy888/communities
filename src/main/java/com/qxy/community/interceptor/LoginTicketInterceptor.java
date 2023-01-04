@@ -27,8 +27,8 @@ import java.util.Date;
 @Slf4j
 @Component
 public class LoginTicketInterceptor implements HandlerInterceptor {
-    @Autowired
-    LoginTicketService loginTicketService;
+//    @Autowired
+//    LoginTicketService loginTicketService;
     @Autowired
     UserService userService;
     @Autowired
@@ -40,7 +40,8 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         String ticket = CookieUtil.getValue(request, "ticket");
         if (!StringUtils.isBlank(ticket)) {
             //查询凭证
-            LoginTicket loginTicket = loginTicketService.selectByTicket(ticket);
+//            LoginTicket loginTicket = loginTicketService.selectByTicket(ticket);
+            LoginTicket loginTicket = userService.findLoginTicket(ticket);
             //判断凭证是否有效
             if (loginTicket != null && loginTicket.getStatus() == CommunityConstant.LOGIN_TICKET_STATUS_VALID && loginTicket.getExpired().after(new Date())) {
                 //根据凭证查询用户

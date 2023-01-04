@@ -9,6 +9,7 @@ import java.util.Map;
  * @version 1.0
  * @Date 2022/8/30 22:47
  */
+@Deprecated
 public interface LoginTicketService {
 
 

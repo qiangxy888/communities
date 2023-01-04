@@ -14,26 +14,50 @@ public class RedisKeyUtil {
     //关注的key的前缀
     private static final String PREFIX_FOLLOWEE = "followee";
     private static final String PREFIX_FOLLOWER = "follower";
+    //验证码key的前缀
+    private static final String PREFIX_KAPTCHA = "kaptcha";
+    //登录凭证key的前缀
+    private static final String PREFIX_TICKET = "ticket";
+    //用户信息key的前缀
+    private static final String PREFIX_USER = "user";
     //某个实体的赞的key
     //如  like:entity:entityType:entityId
     public static String getEntityLikeKey(int entityType, int entityId) {
         return PREFIX_ENTITY_LIKE + SPLIT + entityType + SPLIT + entityId;
     }
+
     //某个用户的赞的key
     //如  like:user:userId
-    public static String getUserLikeKey(int userId){
-        return PREFIX_USER_LIKE+SPLIT+userId;
+    public static String getUserLikeKey(int userId) {
+        return PREFIX_USER_LIKE + SPLIT + userId;
     }
+
     //某个用户关注的实体
     //这里的实体可以是用户、帖子等
     //如 key=>followee:userId:entityType,value=>zset(entityId,now())
-    public static String getFollowee(int userId,int entityType){
-        return PREFIX_FOLLOWEE+SPLIT+userId+SPLIT+entityType;
+    public static String getFollowee(int userId, int entityType) {
+        return PREFIX_FOLLOWEE + SPLIT + userId + SPLIT + entityType;
     }
+
     //某个实体拥有的粉丝
     //entityType和entityId可以唯一确定一个实体
     //key=>follower:entityType:entityId,value=>zset(userId,now())
-    public static String getFollower(int entityType,int entityId){
-        return PREFIX_FOLLOWER+SPLIT+entityType+SPLIT+entityId;
+    public static String getFollower(int entityType, int entityId) {
+        return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
+    }
+
+    //登录验证码
+    public static String getKaptchaKey(String owner) {
+        return PREFIX_KAPTCHA + SPLIT + owner;
+    }
+
+    //登录凭证
+    public static String getTicketKey(String ticket) {
+        return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    //用户信息
+    public static String getUserKey(int userId){
+        return PREFIX_USER+SPLIT+userId;
     }
 }

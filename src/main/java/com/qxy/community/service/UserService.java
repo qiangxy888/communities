@@ -1,5 +1,6 @@
 package com.qxy.community.service;
 
+import com.qxy.community.entity.LoginTicket;
 import com.qxy.community.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,12 @@ public interface UserService {
     Map<String, Object> login(String username, String password, int expiredSeconds);
 
     void logout(String ticket);
+
+    /**
+     * 查询登录凭证
+     * @param ticket
+     * @return
+     */
+    LoginTicket findLoginTicket(String ticket);
+
 }

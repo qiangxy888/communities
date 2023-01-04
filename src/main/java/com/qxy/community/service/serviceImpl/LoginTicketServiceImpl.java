@@ -20,6 +20,7 @@ import java.util.Map;
  * @Date 2022/8/30 22:48
  */
 @Service
+@Deprecated
 public class LoginTicketServiceImpl implements LoginTicketService {
     @Autowired
     private LoginTicketMapper loginTicketMapper;
