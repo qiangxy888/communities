@@ -42,6 +42,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment queryCommentById(int commentId) {
+        return commentMapper.queryCommentById(commentId);
+    }
+
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
     public int insertComment(Comment comment) {
         //判空

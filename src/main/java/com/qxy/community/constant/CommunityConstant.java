@@ -28,4 +28,19 @@ public class CommunityConstant {
     //私信相关
     public static final int UNREAD_MESSAGE=0;//未读消息
     public static final int READ_MESSAGE=1;//已读消息
+
+    //点赞相关
+    public static final int LIKE_STATUS=1;//已赞
+    public static final int UNLIKE_STATUS=0;//未赞
+
+    //系统通知相关--主题
+    public static final String TOPIC_LIKE = "like";//点赞
+    public static final String TOPIC_COMMENT = "comment";//评论
+    public static final String TOPIC_FOLLOW = "follow";//关注
+    //系统通知相关
+    public static final int SYSTEM_USER_ID = 1;
+    //系统通知相关--通知内容
+    public static final String CONTENT_LIKE = "收到了一个赞";
+    public static final String CONTENT_COMMENT = "收到了一条评论";
+    public static final String CONTENT_FOLLOW = "收到了一个关注";
 }

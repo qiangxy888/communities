@@ -89,6 +89,11 @@
             <version>1.5.7.RELEASE</version>
         </dependency>
 
+        <!--引入kafka依赖-->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
 
     </dependencies>
 

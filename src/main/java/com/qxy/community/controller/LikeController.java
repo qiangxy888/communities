@@ -1,7 +1,10 @@
 package com.qxy.community.controller;
 
+import com.qxy.community.constant.CommunityConstant;
+import com.qxy.community.entity.Event;
 import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
+import com.qxy.community.event.EventProducer;
 import com.qxy.community.service.LikeService;
 import com.qxy.community.util.CommunityUtil;
 import com.qxy.community.util.HostHolder;
@@ -25,10 +28,12 @@ public class LikeController {
     private LikeService likeService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private EventProducer producer;
 
     @RequestMapping(path = "/like",method = RequestMethod.POST)
     @ResponseBody
-    public String like(int entityType,int entityId,int entityUserId){
+    public String like(int entityType,int entityId,int entityUserId,int postId){
         User user = hostHolder.getUser();
         //点赞
         //TODO 待处理异常
@@ -41,6 +46,16 @@ public class LikeController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("likeCount",likeCount);
         map.put("likeStatus",likeStatus);
+        //触发点赞通知  判断点赞发通知 取消点赞不发通知
+        if(likeStatus==CommunityConstant.LIKE_STATUS){
+            Event event = new Event().setTopic(CommunityConstant.TOPIC_LIKE)
+                    .setUserId(user.getId())
+                    .setEntityType(entityType)
+                    .setEntityId(entityId)
+                    .setEntityUserId(entityUserId)
+                    .setData("postId",postId);//设置帖子id用于跳转到帖子页面
+            producer.fireEvent(event);
+        }
         return CommunityUtil.getJsonString(0,null,map);
     }
 }

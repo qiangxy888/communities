@@ -36,4 +36,11 @@ public interface CommentService {
      * @return
      */
     int insertComment(Comment comment);
+
+    /**
+     * 根据评论id查评论实体
+     * @param commentId
+     * @return
+     */
+    Comment queryCommentById(int commentId);
 }

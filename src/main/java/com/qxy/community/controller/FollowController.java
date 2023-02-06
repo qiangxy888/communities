@@ -1,8 +1,10 @@
 package com.qxy.community.controller;
 
 import com.qxy.community.constant.CommunityConstant;
+import com.qxy.community.entity.Event;
 import com.qxy.community.entity.Page;
 import com.qxy.community.entity.User;
+import com.qxy.community.event.EventProducer;
 import com.qxy.community.service.FollowService;
 import com.qxy.community.service.UserService;
 import com.qxy.community.util.CommunityUtil;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,8 @@ public class FollowController {
     private HostHolder hostHolder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventProducer producer;
 
     /**
      * 关注
@@ -41,6 +46,15 @@ public class FollowController {
         User user = hostHolder.getUser();
         //TODO 拦截器拦截未登录状态下的请求
         followService.follow(user.getId(), entityType, entityId);
+        //触发关注事件
+        Event event = new Event();
+        event.setTopic(CommunityConstant.TOPIC_FOLLOW)
+                .setUserId(user.getId())
+                .setEntityId(entityId)
+                .setEntityType(entityType)
+                .setEntityUserId(entityId);
+        producer.fireEvent(event);
+
         return CommunityUtil.getJsonString(0, "已关注");
     }
 

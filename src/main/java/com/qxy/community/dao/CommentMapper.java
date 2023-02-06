@@ -17,4 +17,6 @@ public interface CommentMapper {
     int queryCommentsTotal(int entityType, int entityId);
 
     int insertComment(Comment comment);
+
+    Comment queryCommentById(int commentId);
 }

@@ -1,5 +1,6 @@
 package com.qxy.community.service.serviceImpl;
 
+import com.qxy.community.constant.CommunityConstant;
 import com.qxy.community.service.LikeService;
 import com.qxy.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,8 @@ public class LikeServiceImpl implements LikeService {
     //查询某人对某实体的点赞状态
     public int findEntityLikeStatus(int userId, int entityType, int entityId) {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
-        return redisTemplate.opsForSet().isMember(entityLikeKey, userId) ? 1 : 0;
+        return redisTemplate.opsForSet().isMember(entityLikeKey, userId) ?
+                CommunityConstant.LIKE_STATUS : CommunityConstant.UNLIKE_STATUS;
         //已赞 1，未赞0
         //可扩展，如果之后增加回踩的功能，返回-1即可
     }

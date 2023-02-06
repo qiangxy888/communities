@@ -54,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
     public int sendMessage(Message message) {
         int row = 0;
         if (message != null) {
-            message.setContent(HtmlUtils.htmlEscape(message.getContent()));
+//            message.setContent(HtmlUtils.htmlEscape(message.getContent()));//特殊字符转义 防止恶意攻击
             message.setContent(sensitiveFilter.filter(message.getContent()));
             row = messageMapper.saveMessage(message);
         }
