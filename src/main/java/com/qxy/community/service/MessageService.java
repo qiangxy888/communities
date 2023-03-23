@@ -48,7 +48,7 @@ public interface MessageService {
 
     /**
      * 查询未读私信的数量(可以查总数，可以查某个会话的未读数)
-     *
+     * 查总数时 conversationId传null
      * @param userId
      * @param conversationId
      * @return
@@ -70,4 +70,33 @@ public interface MessageService {
      * @return
      */
     int readMessage(List<Integer> ids);
+
+    /**查询某个用户收到的某主题的通知列表
+     * 支持分页
+     * @param userId
+     * @param topic
+     * @param offset
+     * @param rowCnt
+     * @return
+     */
+    List<Message> selectSysMsgList(int userId, String topic,int offset,int rowCnt);
+
+    //查询某用户收到的最新一条系统通知
+    Message selectLastedSysMsg(int userId, String topic);
+
+    /**查询用户收到的系统通知数
+     * topic传null 表示系统通知总数
+     * @param userId
+     * @param topic
+     * @return
+     */
+    int selectSysMsgCount(int userId, String topic);
+
+    /**查询用户未读系统通知数量
+     * topic传null 表示系统通知未读总数
+     * @param userId
+     * @param topic
+     * @return
+     */
+    int selectUnreadSysMsgCount(int userId, String topic);
 }

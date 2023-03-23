@@ -57,7 +57,7 @@ public class EventConsumer {
         Map<String, Object> content = new HashMap<>();
         content.put("entityId",event.getEntityId()+"");
         content.put("entityType",event.getEntityType()+"");
-        content.put("entityUserId",event.getEntityUserId()+"");
+        content.put("userId",event.getEntityUserId()+"");
         if(!event.getData().isEmpty()){
             for(Map.Entry<String,Object> entry : event.getData().entrySet()){
                 content.put(entry.getKey(), entry.getValue());

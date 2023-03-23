@@ -78,4 +78,46 @@
             </if>
         </where>
     </select>
+    <!--查询某用户的系统通知列表-->
+    <select id="selectSysMsgs" resultType="com.qxy.community.entity.Message">
+        select <include refid="selectFields"></include>
+        from message
+        where from_id = 1 and to_id = #{userId} and conversation_id = #{topic} and status !=2
+        order by create_time desc
+        limit #{offset},#{rowCnt}
+    </select>
+    <!--查询某用户收到的最新一条系统通知-->
+    <select id="selectLastedSysMsg" resultType="com.qxy.community.entity.Message">
+        select <include refid="selectFields"></include>
+        from message
+        where id in (
+            select  max(id) from message
+            where from_id = 1
+            and to_id = #{userId}
+            and conversation_id = #{topic}
+            and status !=2
+            )
+    </select>
+    <!--查询用户收到的系统通知总数-->
+    <select id="selectSysMsgCount" resultType="java.lang.Integer">
+        select count(1)
+        from message
+        <where>
+            from_id = 1
+            and to_id = #{userId}
+            <if test="topic !=null">and conversation_id = #{topic}</if>
+            and status !=2
+        </where>
+    </select>
+    <!--查询用户未读系统通知数量-->
+    <select id="selectUnreadSysMsgCount" resultType="java.lang.Integer">
+        select count(1)
+        from message
+        <where>
+            from_id = 1
+            and to_id = #{userId}
+            <if test="topic !=null">and conversation_id = #{topic}</if>
+            and status = 0
+        </where>
+    </select>
 </mapper>

@@ -54,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
     public int sendMessage(Message message) {
         int row = 0;
         if (message != null) {
-//            message.setContent(HtmlUtils.htmlEscape(message.getContent()));//特殊字符转义 防止恶意攻击
+            message.setContent(HtmlUtils.htmlEscape(message.getContent()));//特殊字符转义 防止恶意攻击
             message.setContent(sensitiveFilter.filter(message.getContent()));
             row = messageMapper.saveMessage(message);
         }
@@ -67,6 +67,26 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public int readMessage(List<Integer> ids) {
         return messageMapper.updateMessageStatus(ids, CommunityConstant.READ_MESSAGE);
+    }
+
+    @Override
+    public List<Message> selectSysMsgList(int userId, String topic, int offset, int rowCnt) {
+        return messageMapper.selectSysMsgs(userId, topic, offset, rowCnt);
+    }
+
+    @Override
+    public Message selectLastedSysMsg(int userId, String topic) {
+        return messageMapper.selectLastedSysMsg(userId, topic);
+    }
+
+    @Override
+    public int selectSysMsgCount(int userId, String topic) {
+        return messageMapper.selectSysMsgCount(userId, topic);
+    }
+
+    @Override
+    public int selectUnreadSysMsgCount(int userId, String topic) {
+        return messageMapper.selectUnreadSysMsgCount(userId, topic);
     }
 
 }
