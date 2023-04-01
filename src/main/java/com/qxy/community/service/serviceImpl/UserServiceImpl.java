@@ -147,24 +147,27 @@ public class UserServiceImpl implements UserService {
             map.put("usernameMsg", "该账号已被注册");
             return map;
         }
-        User queryByEmail = userMapper.queryByEmail(user.getEmail());
+        //TODO 为了注册多个测试账号，暂时取消邮箱唯一性的校验
+     /*   User queryByEmail = userMapper.queryByEmail(user.getEmail());
         if (queryByEmail != null) {
             map.put("emailMsg", "该邮箱已被注册");
             return map;
-        }
+        }*/
         //保存数据到数据库
         user.setSalt(CommunityUtil.generateUUID().substring(0, 5));//生成五位数的salt，用于提高密码复杂度
         user.setPassword(CommunityUtil.md5(user.getPassword() + user.getSalt()));//给密码加密
         user.setStatus(0);//设置状态 未激活
         user.setType(0);//设置类型 普通用户
         user.setActivationCode(CommunityUtil.generateUUID());//生成激活码
-        user.setHeaderUrl(String.format("http://images.nowvoder.com/head/%dt.png", new Random().nextInt(1000)));//生成自带随机头像
+        //TODO 设置用户默认头像
+//        user.setHeaderUrl(String.format("http://images.nowvoder.com/head/%dt.png", new Random().nextInt(1000)));//生成自带随机头像
+        user.setHeaderUrl("../resources/static/image/header1.jpg");//系统默认头像
         user.setCreateTime(new Date());//设置创建时间为当前时间
         userMapper.save(user);//添加用户
         //发送激活文件
         Context context = new Context();
         context.setVariable("email", user.getEmail());
-        // http://localhost:8080/community/activayion/userId/activationCode
+        // http://localhost:8080/community/activation/userId/activationCode
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);

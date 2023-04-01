@@ -1,9 +1,6 @@
 package com.qxy;
 
-import com.qxy.community.dao.CommentMapper;
-import com.qxy.community.dao.DiscussPostMapper;
-import com.qxy.community.dao.LoginTicketMapper;
-import com.qxy.community.dao.UserMapper;
+import com.qxy.community.dao.*;
 import com.qxy.community.entity.Comment;
 import com.qxy.community.entity.DiscussPost;
 import com.qxy.community.entity.LoginTicket;
@@ -37,6 +34,8 @@ public class MapperTest {
     private LoginTicketMapper loginTicketMapper;
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private MessageMapper messageMapper;
     @Test
     public void queryById(){
         User user = userMapper.queryById(1);
@@ -97,5 +96,14 @@ public class MapperTest {
     public void queryCommentTotal(){
         int total = commentMapper.queryCommentsTotal(1, 233);
         System.out.println(total);
+    }
+    @Test
+    public void querySysMsg(){
+        int userId=111;
+        String topic = "like";
+//        System.out.println("list:"+messageMapper.selectSysMsgs(userId,topic));
+        System.out.println("Lasted:"+messageMapper.selectLastedSysMsg(userId,topic));
+//        System.out.println("count:"+messageMapper.selectSysMsgCount(userId,topic));
+//        System.out.println("unRead:"+messageMapper.selectUnreadSysMsgCount(userId,topic));
     }
 }

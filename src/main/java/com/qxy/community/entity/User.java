@@ -1,5 +1,6 @@
 package com.qxy.community.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 
@@ -22,5 +23,6 @@ public class User {
     private int status;//状态 0未激活 1已激活
     private String activationCode;//激活码
     private String headerUrl;//用户头像路径
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;//创建时间
 }

@@ -82,7 +82,7 @@ public class LoginController {
     public String register(Model model, User user) {
         Map<String, Object> map = userService.register(user);
         if (map == null || map.isEmpty()) {
-            model.addAttribute("msg", "注册成功，我们已经给您的邮箱发送了一封激活邮件，请尽快激活");
+            model.addAttribute("msg", "注册成功，给您发了一封邮件，请查收并尽快激活账号");
             model.addAttribute("target", "/index");
             return "/site/operate-result";
         } else {

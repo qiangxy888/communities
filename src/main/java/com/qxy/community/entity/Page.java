@@ -50,9 +50,9 @@ public class Page {
      */
     public int getTotal() {
         if (rows % rowCnt == 0) {
-            return rows % rowCnt;
+            return rows / rowCnt;
         } else {
-            return rows % rowCnt + 1;
+            return rows / rowCnt + 1;
         }
     }
 

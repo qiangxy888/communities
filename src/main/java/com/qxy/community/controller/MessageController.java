@@ -221,7 +221,7 @@ public class MessageController {
             messageVo.put("message", sysMsg);
             String content = HtmlUtils.htmlUnescape(sysMsg.getContent());//恢复转义字符
             Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
-            messageVo.put("user", userService.queryById((Integer) data.get("userId")));
+            messageVo.put("user", userService.queryById(Integer.parseInt(data.get("userId").toString())));
             messageVo.put("entityType", data.get("entityType"));
             messageVo.put("entityId", data.get("entityId"));
             if (data.containsKey("postId")) {
@@ -252,7 +252,7 @@ public class MessageController {
                 HashMap data = JSONObject.parseObject(content, HashMap.class);
                 HashMap<String, Object> detailMap = new HashMap<>();
                 detailMap.put("message", message);
-                detailMap.put("user", userService.queryById((Integer) data.get("userId")));
+                detailMap.put("user", userService.queryById(Integer.parseInt(data.get("userId").toString())));
                 detailMap.put("entityId",data.get("entityId"));
                 detailMap.put("entityType",data.get("entityType"));
                 //通知作者

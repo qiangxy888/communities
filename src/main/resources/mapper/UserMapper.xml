@@ -47,7 +47,7 @@
     </select>
     <insert id="save" parameterType="com.qxy.community.entity.User" keyProperty="id" useGeneratedKeys="true">
         insert into user(<include refid="saveFields"></include>)
-        values (#{username},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},CURRENT_DATE )
+        values (#{username},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},#{createTime} )
     </insert>
     <update id="updateStatus" >
         update user
