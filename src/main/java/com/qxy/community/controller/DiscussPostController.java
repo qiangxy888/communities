@@ -1,10 +1,8 @@
 package com.qxy.community.controller;
 
 import com.qxy.community.constant.CommunityConstant;
-import com.qxy.community.entity.Comment;
-import com.qxy.community.entity.DiscussPost;
-import com.qxy.community.entity.Page;
-import com.qxy.community.entity.User;
+import com.qxy.community.entity.*;
+import com.qxy.community.event.EventProducer;
 import com.qxy.community.service.CommentService;
 import com.qxy.community.service.DiscussPostService;
 import com.qxy.community.service.LikeService;
@@ -42,6 +40,8 @@ public class DiscussPostController {
     private HostHolder hostHolder;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private EventProducer eventProducer;
 
     /**
      * 发布帖子
@@ -68,6 +68,13 @@ public class DiscussPostController {
         discussPost.setContent(content);
         discussPost.setCreateTime(new Date());
         discussPostService.saveDiscussPost(discussPost);
+        //触发es事件
+        Event event = new Event()
+                .setTopic(CommunityConstant.TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(CommunityConstant.ENTITY_TYPE_POST)
+                .setEntityId(discussPost.getId());
+        eventProducer.fireEvent(event);
         return CommunityUtil.getJsonString(0, "发布成功");
     }
 

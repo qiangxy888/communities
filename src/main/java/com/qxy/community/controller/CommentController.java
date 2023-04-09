@@ -35,8 +35,9 @@ public class CommentController {
     private DiscussPostService discussPostService;
     @Autowired
     private EventProducer producer;
-    @RequestMapping(path = "/add/{discussPostId}",method = RequestMethod.POST)
-    public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment){
+
+    @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
+    public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());
         comment.setStatus(0);
         comment.setCreateTime(new Date());
@@ -47,17 +48,26 @@ public class CommentController {
                 .setEntityId(comment.getEntityId())
                 .setTopic(CommunityConstant.TOPIC_COMMENT)
                 .setEntityType(comment.getEntityType())
-                .setData("postId",discussPostId);
+                .setData("postId", discussPostId);
         //评论的对象可能是帖子也可能是评论，需要判断得到帖子或者评论发布者的id即entityUserId
-        if(comment.getEntityType()==CommunityConstant.ENTITY_TYPE_POST){
+        if (comment.getEntityType() == CommunityConstant.ENTITY_TYPE_POST) {
             DiscussPost target = discussPostService.queryById(comment.getEntityId());
             event.setEntityUserId(target.getUserId());
-        }else if(comment.getEntityType()==CommunityConstant.ENTITY_TYPE_COMMENT){
+        } else if (comment.getEntityType() == CommunityConstant.ENTITY_TYPE_COMMENT) {
             Comment target = commentService.queryCommentById(comment.getId());
             event.setEntityUserId(target.getUserId());
         }
         producer.fireEvent(event);
+        // 回复帖子相当于更改了帖子信息，需要触发事件  以便更新到es
+        if (comment.getEntityType() == CommunityConstant.ENTITY_TYPE_POST) {
+            event = new Event()
+                    .setTopic(CommunityConstant.TOPIC_PUBLISH)
+                    .setUserId(comment.getUserId())
+                    .setEntityType(CommunityConstant.ENTITY_TYPE_POST)
+                    .setEntityId(discussPostId);
+            producer.fireEvent(event);
 
-        return "redirect:/discuss/detail/"+discussPostId;
+        }
+        return "redirect:/discuss/detail/" + discussPostId;
     }
 }
