@@ -45,4 +45,20 @@ public class CommunityConstant {
     public static final String CONTENT_LIKE = "收到了一个赞";
     public static final String CONTENT_COMMENT = "收到了一条评论";
     public static final String CONTENT_FOLLOW = "收到了一个关注";
+
+    //权限相关
+    /**
+     * 权限: 普通用户
+     */
+    public static final String AUTHORITY_USER = "user";
+
+    /**
+     * 权限: 管理员
+     */
+    public static final String AUTHORITY_ADMIN = "admin";
+
+    /**
+     * 权限: 版主
+     */
+    public static final String AUTHORITY_MODERATOR = "moderator";
 }

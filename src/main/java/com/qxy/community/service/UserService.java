@@ -3,8 +3,10 @@ package com.qxy.community.service;
 import com.qxy.community.entity.LoginTicket;
 import com.qxy.community.entity.User;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -45,5 +47,7 @@ public interface UserService {
      * @return
      */
     LoginTicket findLoginTicket(String ticket);
+
+    Collection<? extends GrantedAuthority> getAuthorities(int userId);
 
 }
