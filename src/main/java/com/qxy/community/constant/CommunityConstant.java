@@ -38,6 +38,7 @@ public class CommunityConstant {
     public static final String TOPIC_COMMENT = "comment";//评论
     public static final String TOPIC_FOLLOW = "follow";//关注
     public static final String TOPIC_PUBLISH = "public";//发布
+    public static final String TOPIC_DELETE = "delete";//发布
 
     //系统通知相关
     public static final int SYSTEM_USER_ID = 1;

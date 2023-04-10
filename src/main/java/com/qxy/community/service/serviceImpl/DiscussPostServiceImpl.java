@@ -21,6 +21,7 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     private DiscussPostMapper discussPostMapper;
     @Autowired
     private SensitiveFilter sensitiveFilter;
+
     @Override
     public List<DiscussPost> queryPageList(Integer userId, int pageCnt, int rowCnt) {
         List<DiscussPost> discussPosts = discussPostMapper.queryPageList(userId, pageCnt, rowCnt);
@@ -35,7 +36,7 @@ public class DiscussPostServiceImpl implements DiscussPostService {
 
     @Override
     public DiscussPost saveDiscussPost(DiscussPost discussPost) {
-        if(discussPost==null){
+        if (discussPost == null) {
             throw new IllegalArgumentException("参数不能为空");
         }
         //转义HTML标记
@@ -56,6 +57,16 @@ public class DiscussPostServiceImpl implements DiscussPostService {
 
     @Override
     public int updateCommentCount(int id, int count) {
-        return discussPostMapper.updateCommentCount(id,count);
+        return discussPostMapper.updateCommentCount(id, count);
+    }
+
+    @Override
+    public int updateType(int id, int type) {
+        return discussPostMapper.updateType(id, type);
+    }
+
+    @Override
+    public int updateStatus(int id, int status) {
+        return discussPostMapper.updateStatus(id, status);
     }
 }

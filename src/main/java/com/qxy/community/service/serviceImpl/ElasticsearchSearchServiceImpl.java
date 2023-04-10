@@ -1,7 +1,7 @@
 package com.qxy.community.service.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qxy.community.dao.elasticsearch.DiscussPostRepository;
+import com.qxy.community.dao.elasticSearch.DiscussPostRepository;
 import com.qxy.community.entity.DiscussPost;
 import com.qxy.community.entity.SearchResult;
 import com.qxy.community.service.ElasticsearchService;

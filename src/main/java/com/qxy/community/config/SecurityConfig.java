@@ -66,6 +66,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .hasAnyAuthority(
                         CommunityConstant.AUTHORITY_ADMIN
                 )
+                .antMatchers(
+                        "/discuss/top",
+                        "/discuss/wonderful"
+                )
+                .hasAnyAuthority(
+                        CommunityConstant.AUTHORITY_MODERATOR
+                )
+                .antMatchers(
+                        "/discuss/delete"
+                )
+                .hasAnyAuthority(
+                        CommunityConstant.AUTHORITY_ADMIN
+                )
                 .anyRequest().permitAll().and().csrf().disable();
         //权限不足时处理
         http.exceptionHandling()
